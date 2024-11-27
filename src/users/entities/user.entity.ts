@@ -6,7 +6,7 @@ export class User {
   name: string;
   @Prop({ unique: true })
   email: string;
-  @Prop()
+  @Prop({ select: false })
   password: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

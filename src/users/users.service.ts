@@ -4,6 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,23 +14,25 @@ export class UsersService {
   ) {}
   async createUser(createUserDto: CreateUserDto) {
     const user = await this.userModel.create(createUserDto);
-    return user.save();
+    return user;
   }
 
-  findAllUsers() {
-    const users = this.userModel.find();
+  async findAllUsers() {
+    const users = await this.userModel.find();
     return users;
   }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} user`;
-  // }
+  async findOne(id: string) {
+    return await this.userModel.findById(id);
+  }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    return await this.userModel.findByIdAndUpdate(id, updateUserDto, {
+      new: true,
+    });
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
+  async remove(id: string) {
+    return await this.userModel.findByIdAndDelete(id);
+  }
 }
